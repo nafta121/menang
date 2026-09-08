@@ -1,0 +1,38 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+model Employee {
+  id String @id @default(cuid())
+  name String
+  role Role
+  isActive Boolean @default(true)
+  annualQuota Int @default(12)
+  createdAt DateTime @default(now())
+  schedules Schedule[]
+  leaves Leave[]
+}
+model Schedule {
+  id String @id @default(cuid())
+  employeeId String
+  employee Employee @relation(fields: [employeeId], references: [id])
+  date DateTime @db.Date
+  shiftType ShiftType
+  isLocked Boolean @default(false)
+  note String?
+  createdAt DateTime @default(now())
+  @@unique([employeeId, date])
+  @@index([date])
+}
+model Leave {
+  id String @id @default(cuid())
+  employeeId String
+  employee Employee @relation(fields: [employeeId], references: [id])
+  type LeaveType
+  date DateTime @db.Date
+  status LeaveStatus
+  createdAt DateTime @default(now())
+}
+enum Role { SENIOR JUNIOR }
+enum ShiftType { P S M Mid L CT }
+enum LeaveType { ANNUAL REQUESTED_OFF }
+enum LeaveStatus { PENDING APPROVED REJECTED }
