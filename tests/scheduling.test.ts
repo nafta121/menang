@@ -7,6 +7,10 @@ const fatigueEntries: ScheduleEntry[] = [
   { employeeId: "s0", date: "2026-05-02", shiftType: "P" }, { employeeId: "j0", date: "2026-05-02", shiftType: "P" },
 ];
 assert.ok(validateSchedule(fatigueEntries, team).some((violation) => violation.rule === "FATIGUE"));
+const juniorOnly: ScheduleEntry[] = [
+  { employeeId: "j0", date: "2026-05-03", shiftType: "P" }, { employeeId: "j1", date: "2026-05-03", shiftType: "P" },
+];
+assert.ok(validateSchedule(juniorOnly, team).some((violation) => violation.rule === "COMPOSITION"));
 assert.equal(checkMonthlyFeasibility(2026, 2, 7).length, 0);
 assert.equal(checkMonthlyFeasibility(2026, 5, 7)[0].rule, "COVERAGE");
 const generated = generateFourWeekSchedule(2026, 2, team);
