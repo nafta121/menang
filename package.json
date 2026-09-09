@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "node --experimental-strip-types tests/scheduling.test.ts",
@@ -26,5 +26,8 @@
   "type": "module",
   "prisma": {
     "seed": "node --experimental-strip-types prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }
